@@ -1,17 +1,134 @@
 <template>
   <div id="LayOutWrap">
-    <h1>我是布局组件</h1>
+    <el-container class="layout_con">
+      <el-header class="flexC">
+        <img src="~assets/home_logo.png" alt />
+        <i :class="getCollapse" class="collapseIcon" @click="isCollapse = !isCollapse"></i>
+        <div class="login_name">
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              {{_loginName}}
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item icon="el-icon-s-home" @click.native="$router.push('/hemamm')">首页</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-s-custom" @click.native="handelLoginOut">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+      </el-header>
+      <el-container class="layout_body">
+        <el-aside width="200px">
+          <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
+            <div v-for="subMenu in menuList.children" :key="subMenu.name">
+              <el-submenu :index="subMenu.name" v-if="subMenu.children">
+                <template slot="title">
+                  <i :class="subMenu.meta.icon"></i>
+                  <span slot="title">{{subMenu.meta.title}}</span>
+                </template>
+                <el-menu-item
+                  :index="menu.name"
+                  v-for="menu in subMenu.children"
+                  :key="menu.name"
+                  @click.native="handleToView(menu)"
+                >
+                  <i :class="menu.meta.icon"></i>
+                  <span>{{menu.meta.title}}</span>
+                </el-menu-item>
+              </el-submenu>
+              <el-menu-item v-else :index="subMenu.name" @click.native="handleToView(subMenu)">
+                <i :class="subMenu.meta.icon"></i>
+                <span>{{subMenu.meta.title}}</span>
+              </el-menu-item>
+            </div>
+          </el-menu>
+        </el-aside>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { myrouter } from '@/utils/Routers.js'
 export default {
-
+  data () {
+    return {
+      isCollapse: false,
+      menuList: myrouter
+    }
+  },
+  computed: {
+    ...mapGetters({ userProfile: 'userProfile' }),
+    getCollapse () {
+      if (this.isCollapse) {
+        return {
+          'el-icon-s-unfold': true
+        }
+      } else {
+        return {
+          'el-icon-s-fold': true
+        }
+      }
+    },
+    _loginName () {
+      return this.userProfile.name
+    }
+  },
+  methods: {
+    handelLoginOut () {
+      this.$store.dispatch('loginModule/loginOut')
+      this.$router.push('/login')
+    },
+    handleToView (menu) {
+      this.$router.push({ name: menu.name })
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
-#LayOutWrap{
-
+#LayOutWrap {
+  width: 100%;
+  height: 100%;
+  .layout_con {
+    width: 100%;
+    height: 100%;
+    .el-header {
+      height: 70px !important;
+      background: linear-gradient(90deg, #1493fa, #01c6fa);
+      .collapseIcon {
+        font-size: 18px;
+        color: #fff;
+        margin-left: 20px;
+      }
+      .login_name {
+        margin-left: auto;
+        &:hover {
+          cursor: pointer;
+        }
+        .el-dropdown-link {
+          color: #fff;
+        }
+      }
+    }
+    .layout_body {
+      width: 100%;
+      height: 100%;
+      .el-menu {
+        height: 100%;
+        .el-menu-item {
+          &:hover,
+          &.is-active {
+            background: linear-gradient(90deg, #1493fa, #01c6fa);
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

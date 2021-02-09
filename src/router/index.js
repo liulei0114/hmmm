@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
 import NProgress from 'nprogress' // Progress 进度条
+import { myrouter } from '@/utils/Routers.js'
 Vue.use(VueRouter)
 
 const routes = [
@@ -13,10 +14,8 @@ const routes = [
     path: '/login',
     component: () => import('@/views/Login/Login.vue')
   },
-  {
-    path: '/hemamm',
-    component: () => import('@/components/LayOut/LayOut')
-  }
+  myrouter
+
 ]
 
 const router = new VueRouter({
@@ -39,9 +38,12 @@ router.beforeEach((to, from, next) => {
   } else {
     if (store.getters.token) { // ? 有token
       if (!store.getters.userProfile) { // ? 刷新页面有token 没有用户信息,重新获取
-        store.dispatch('loginModule/userProfile')
+        store.dispatch('loginModule/userProfile').then((result) => {
+          next()
+        })
+      } else {
+        next()
       }
-      next()
     } else {
       next('/login')
       NProgress.done()

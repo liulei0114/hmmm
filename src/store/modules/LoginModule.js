@@ -1,5 +1,5 @@
 import { loginApi, getProfileApi } from '@/network/api/HmmmApi'
-import { getToken, saveToken } from '@/utils/LocalStorage'
+import { getToken, saveToken, removeToken } from '@/utils/LocalStorage'
 import { Message } from 'element-ui'
 const loginModule = {
   namespaced: true,
@@ -38,6 +38,12 @@ const loginModule = {
     async userProfile ({ state, commit, dispatch }, params) {
       let result = await getProfileApi()
       commit('SET_USER_PROFILE', result)
+    },
+
+    loginOut ({ commit }) {
+      commit('SET_USER_TOKEN', null)
+      commit('SET_USER_PROFILE', {})
+      removeToken()
     }
   }
 }
