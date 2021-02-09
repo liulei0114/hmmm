@@ -1,8 +1,13 @@
-
+html{
+  width: 100%;
+  height: 100%;
+}
 body {
   background-color: #f0f2f5;
-  font: 14px 'Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif;
+  font: 14px/1.15 'Microsoft YaHei', 'Heiti SC', tahoma, arial, 'Hiragino Sans GB', \\5B8B\4F53, sans-serif;
   color: #606266;
+  width: 100%;
+  height: 100%;
 }
 
 /*清除浮动*/
@@ -17,4 +22,23 @@ body {
 .clearfix {
   *zoom: 1
 }
+
+.flexC{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.flex{
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flexBetween{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
