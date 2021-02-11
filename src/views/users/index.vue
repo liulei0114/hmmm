@@ -13,7 +13,7 @@
         >新增用户</el-button>
       </div>
       <div class="list_info">
-        <el-alert :title="_title" type="info" show-icon></el-alert>
+        <el-alert :title="_title" type="info" show-icon :closable='false'></el-alert>
       </div>
       <el-table :data="userList" style="width: 100%" :header-cell-style="setFirstHeadClass">
         <el-table-column label="序号" width="180" align="center">

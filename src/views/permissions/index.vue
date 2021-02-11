@@ -1,31 +1,36 @@
 <template>
-  <div id="PermissionWrap">
+  <div id="UserWrap">
     <el-card class="box-card">
       <div class="search_wrap flexC">
-        <el-input v-model="username" placeholder="根据用户名搜索"></el-input>
-        <el-button @click="clearUsername()">清空</el-button>
-        <el-button type="primary" @click="getUserList()">搜索</el-button>
+        <el-input v-model="permissionName" placeholder="根据用户名搜索"></el-input>
+        <el-button @click="clearPermissionName()">清空</el-button>
+        <el-button type="primary" @click="getPermissionRoleList()">搜索</el-button>
         <el-button
           type="success"
           icon="el-icon-edit"
           style="marginLeft:auto"
-          @click="addUser()"
+          @click="addPermissionRole()"
         >新增权限组</el-button>
       </div>
       <div class="list_info">
-        <el-alert :title="_title" type="info" show-icon></el-alert>
+        <el-alert :title="_title" type="info" show-icon :closable='false'></el-alert>
       </div>
-      <el-table :data="permissonList" style="width: 100%" :header-cell-style="setFirstHeadClass">
+      <el-table
+        :data="permissionDetailList"
+        style="width: 100%"
+        :header-cell-style="setFirstHeadClass"
+      >
         <el-table-column label="用户名" align="center">
           <template slot-scope="scope">
             <span>{{scope.row.title}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="日期" sortable>
-           <template slot-scope="scope">
-            <span>{{scope.row.create_date}}</span>
+        <el-table-column label="日期" sortable prop="create_date">
+          <template slot-scope="scope">
+            <span>{{formatDate(scope.row.create_date)}}</span>
           </template>
         </el-table-column>
+
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button
@@ -33,15 +38,14 @@
               icon="el-icon-edit"
               circle
               plain
-              @click="edituserInfo(scope.row)"
+              @click="editPermissionRole(scope.row)"
             ></el-button>
             <el-button
               type="danger"
               icon="el-icon-delete"
               circle
-              v-if="canDelete(scope.row)"
               plain
-              @click="handleDeleteUserInfo(scope.row.id)"
+              @click="handleDeletePermissionRole(scope.row.id)"
             ></el-button>
           </template>
         </el-table-column>
@@ -59,82 +63,53 @@
       </div>
     </el-card>
 
-    <!-- 编辑弹窗 -->
-    <el-dialog :title="handleType" :visible.sync="editUserVisible" width="40%">
-      <el-form :model="userInfo" :rules="rules" ref="editUserform">
-        <el-form-item label="用户名" label-width="100px" prop="username">
-          <el-input v-model="userInfo.username" autocomplete="on" size="medium"></el-input>
+    <!-- 保存/编辑弹窗 -->
+    <el-dialog :title="handleType" :visible.sync="permissionVisible" width="40%">
+      <el-form :model="permissionRole" :rules="rules" ref="permissionRole">
+        <el-form-item label="用户名" label-width="100px" prop="title">
+          <el-input v-model="permissionRole.title" autocomplete="on" size="medium"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" label-width="100px" prop="email">
-          <el-input v-model="userInfo.email" autocomplete="on"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" label-width="100px" prop="password" v-if="handleType==='新增用户'">
-          <el-input type="password" show-password v-model="userInfo.password" autocomplete="on"></el-input>
-        </el-form-item>
-        <el-form-item label="角色" label-width="100px">
-          <el-input v-model="userInfo.role" autocomplete="on"></el-input>
-        </el-form-item>
-        <el-form-item label="权限组名称" label-width="100px" prop="permission_group_id">
-          <el-select v-model="userInfo.permission_group_id">
-            <el-option
-              v-for="item in permissionList"
-              :key="item.id"
-              :label="item.title"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="联系电话" label-width="100px">
-          <el-input v-model="userInfo.phone" autocomplete="on"></el-input>
-        </el-form-item>
-        <el-form-item label="介绍" label-width="100px">
-          <el-input type="textarea" placeholder="请输入内容" v-model="userInfo.introduction"></el-input>
+        <el-form-item label="权限分配" label-width="100px">
+          <el-tree
+            :data="menuList"
+            show-checkbox
+            node-key="id"
+            ref="tree"
+            highlight-current
+            :props="defaultProps"
+            :default-expanded-keys="[0]"
+          ></el-tree>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="editUserVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleEditUserinfo()">确 定</el-button>
+        <el-button @click="permissionVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handlePermissionRole()">确 定</el-button>
       </div>
-    </el-dialog>
-
-    <!-- 新增用户 -->
+    </el-dialog>-->
   </div>
 </template>
 
 <script>
 import {
-  getPermissonListApi,
-  editUserInfoApi,
-  deleteUserInfoApi,
-  addUserInfoApi
+  getPermissionRoleListApi,
+  deletePermissionRoleApi,
+  editPermissionRoleApi,
+  addPermissionRoleApi,
+  getMenuListApi,
+  selectPermissionByRoleApi
 } from '@/network/api/HmmmApi'
 import Pagination from '@/mixins/pagination.js'
 export default {
   mixins: [Pagination],
   data () {
     return {
-      username: '',
-      permissonList: [],
-      fetchDataList: this.getUserList,
-      editUserVisible: false,
-      userInfo: {},
-      permissionList: [],
+      permissionName: '',
+      fetchDataList: this.getPermissionRoleList,
+      permissionVisible: false,
+      permissionDetailList: [],
       rules: {
-        username: [
+        title: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
-          {
-            min: 1,
-            max: 10,
-            message: '长度在 1 到 10 个字符',
-            trigger: 'blur'
-          }
-        ],
-        email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }],
-        permission_group_id: [
-          { required: true, message: '请选择权限组', trigger: 'change' }
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
           {
             min: 1,
             max: 10,
@@ -143,7 +118,13 @@ export default {
           }
         ]
       },
-      handleType: ''
+      handleType: '',
+      permissionRole: {},
+      menuList: [],
+      defaultProps: {
+        children: 'children',
+        label: 'title'
+      }
     }
   },
   computed: {
@@ -152,63 +133,76 @@ export default {
     }
   },
   created () {
-    this.getUserList()
-    this.getPermissionList()
+    this.getMenuList()
+    this.getPermissionRoleList()
   },
   methods: {
-    async getUserList () {
-      let params = { ...this.pageInfo, username: this.username }
-      let result = await getUserListApi(params)
+    async getPermissionRoleList () {
+      let params = { ...this.pageInfo, title: this.permissionName }
+      let result = await getPermissionRoleListApi(params)
       this.pageInfo.total = result.counts
-      this.userList = result.list
+      this.permissionDetailList = result.list
     },
-    async getPermissionList () {
-      let params = { ...this.pageInfo, username: this.username }
-      let result = await getPermissonApi(params)
-      this.pageInfo.total = result.counts
-      this.userList = result.list
-    },
-    async getPermissionList () {
-      let result = await getPermissionListApi()
-      this.permissionList = result
-    },
-    canDelete (row) {
-      if (row.role === 'admin') {
-        return false
-      }
-      return true
+    async getMenuList () {
+      let result = await getMenuListApi()
+      result.forEach((e, i) => {
+        e.pid = 0
+      })
+      let resultStr = JSON.stringify(result)
+      resultStr = resultStr.replace(/(childs)|(points)/g, 'children')
+      let temp = JSON.parse(resultStr)
+      this.menuList = [
+        {
+          title: '系统菜单和页面权限点',
+          children: [...temp],
+          id: 0
+        }
+      ]
     },
     setFirstHeadClass () {
       return { 'background-color': '#fafafa' }
     },
-    clearUsername () {
-      this.username = ''
-      this.getUserList()
+    clearPermissionName () {
+      this.permissionName = ''
+      this.getPermissionRoleList()
     },
-    edituserInfo (userInfo) {
-      this.handleType = '编辑用户'
-      this.editUserVisible = true
-      this.userInfo = this._.cloneDeep(userInfo)
+    async editPermissionRole (permissionRole) {
+      let reuslt = await selectPermissionByRoleApi(permissionRole.id)
+      this.handleType = '编辑权限组'
+      this.permissionVisible = true
+      this.permissionRole = reuslt
+      this.$nextTick(() => {
+        this.$refs.tree.setCheckedKeys(this.permissionRole.permissions)
+      })
     },
-    handleEditUserinfo () {
-      this.$refs.editUserform.validate(async (flag) => {
-        this.$delete(this.userInfo, 'permission_group_title')
-        this.$delete(this.userInfo, 'is_deleted')
-        this.$delete(this.userInfo, 'last_update_time')
-        this.$delete(this.userInfo, 'create_time')
+    handlePermissionRole () {
+      let checkKeys = this.$refs.tree.getCheckedKeys()
+      if (checkKeys.length === 0) {
+        this.$message({
+          message: '请选择权限组',
+          type: 'error'
+        })
+        return
+      }
+      if (!checkKeys[0]) checkKeys.shift()
+      this.permissionRole.permissions = checkKeys
+      this.$refs.permissionRole.validate(async (flag) => {
         if (flag) {
           try {
-            if (this.handleType === '编辑用户') {
-              await editUserInfoApi(this.userInfo.id, this.userInfo)
+            if (this.handleType === '编辑权限组') {
+              await editPermissionRoleApi(
+                this.permissionRole.id,
+                this.permissionRole
+              )
             } else {
-              await addUserInfoApi(this.userInfo)
+              await addPermissionRoleApi(this.permissionRole)
             }
             this.$message({
               message: `${this.handleType}成功`,
               type: 'success'
             })
-            this.editUserVisible = false
-            this.getUserList()
+            this.permissionVisible = false
+            this.getPermissionRoleList()
           } catch (error) {
             this.$message({
               message: error,
@@ -218,19 +212,19 @@ export default {
         }
       })
     },
-    handleDeleteUserInfo (id) {
-      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+    handleDeletePermissionRole (id) {
+      this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       })
         .then(async () => {
-          await deleteUserInfoApi(id)
+          await deletePermissionRoleApi(id)
           this.$message({
             type: 'success',
             message: '删除成功!'
           })
-          this.getUserList()
+          this.getPermissionRoleList()
         })
         .catch(() => {
           this.$message({
@@ -239,22 +233,23 @@ export default {
           })
         })
     },
-    addUser () {
-      this.handleType = '新增用户'
-      this.userInfo = {}
-      this.editUserVisible = true
-    }
-  },
-  filters: {
-    filterPhone (phone) {
-      return phone || ''
+    addPermissionRole () {
+      if (this.$refs.tree) {
+        this.$refs.tree.setCheckedKeys([])
+      }
+      this.handleType = '新增权限组'
+      this.permissionRole = {}
+      this.permissionVisible = true
+    },
+    formatDate (date) {
+      return this.$moment(date).format('YYYY-MM-DD')
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-#PermissionWrap {
+#UserWrap {
   .search_wrap {
     .el-input {
       width: 200px;
@@ -273,7 +268,7 @@ export default {
   }
   /deep/ .el-dialog {
     border-radius: 15px;
-    // overflow: hidden;
+    overflow: hidden;
     .el-dialog__header {
       background-color: #409eff;
       .el-dialog__title {

@@ -90,11 +90,45 @@ export function deleteMenuInfoApi (id) {
   })
 }
 
-//! 后台管理-权限-列表
-export function getPermissonListApi (params) {
+//! 后台管理-权限-角色列表
+export function getPermissionRoleListApi (params) {
   return service({
     url: '/permissions',
     method: 'GET',
     params
+  })
+}
+
+//! 后台管理-权限-删除角色
+export function deletePermissionRoleApi (id) {
+  return service({
+    url: '/permissions/' + id,
+    method: 'DELETE'
+  })
+}
+
+//! 后台管理-权限-编辑权限组
+export function editPermissionRoleApi (id, data) {
+  return service({
+    url: '/permissions/' + id,
+    method: 'PUT',
+    data
+  })
+}
+
+//! 后台管理-权限-新增权限组
+export function addPermissionRoleApi (data) {
+  return service({
+    url: '/permissions',
+    method: 'POST',
+    data
+  })
+}
+
+//! 后台管理-权限-格局角色获取对应权限
+export function selectPermissionByRoleApi (id) {
+  return service({
+    url: '/permissions/' + id,
+    method: 'GET'
   })
 }
