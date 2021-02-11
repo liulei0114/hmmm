@@ -19,7 +19,11 @@
       </el-header>
       <el-container class="layout_body">
         <el-aside width="200px">
-          <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
+          <el-menu
+            :default-active="defaultAvtive"
+            class="el-menu-vertical-demo"
+            :collapse="isCollapse"
+          >
             <div v-for="subMenu in menuList.children" :key="subMenu.name">
               <el-submenu :index="subMenu.name" v-if="subMenu.children">
                 <template slot="title">
@@ -44,7 +48,10 @@
           </el-menu>
         </el-aside>
         <el-main>
-          <router-view></router-view>
+          <div class="nav_head"></div>
+          <div class="main_body">
+            <router-view></router-view>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -58,7 +65,8 @@ export default {
   data () {
     return {
       isCollapse: false,
-      menuList: myrouter
+      menuList: myrouter,
+      defaultAvtive: ''
     }
   },
   computed: {
@@ -76,6 +84,14 @@ export default {
     },
     _loginName () {
       return this.userProfile.name
+    }
+  },
+  watch: {
+    '$route.path': {
+      immediate: true,
+      handler () {
+        this.defaultAvtive = this.$route.name
+      }
     }
   },
   methods: {
@@ -96,9 +112,13 @@ export default {
   height: 100%;
   .layout_con {
     width: 100%;
-    height: 100%;
     .el-header {
       height: 70px !important;
+      z-index: 2000;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
       background: linear-gradient(90deg, #1493fa, #01c6fa);
       .collapseIcon {
         font-size: 18px;
@@ -117,15 +137,48 @@ export default {
     }
     .layout_body {
       width: 100%;
-      height: 100%;
       .el-menu {
         height: 100%;
+        position: fixed;
+        left: 0;
+        top: 70px;
+        box-shadow: 2px 0 10px rgb(100, 100, 100) !important;
+        width: 200px;
+        z-index: 2000;
+        .el-submenu__title {
+          i {
+            color: #333;
+          }
+        }
         .el-menu-item {
+          color: #333;
+
           &:hover,
           &.is-active {
             background: linear-gradient(90deg, #1493fa, #01c6fa);
             color: #fff;
           }
+          i {
+            color: #333;
+          }
+        }
+      }
+      .el-main {
+        width: 100%;
+        padding: 0;
+        .nav_head {
+          width: 100%;
+          height: 35px;
+          background-color: #fff;
+          padding: 0 10px;
+          position: fixed;
+          top: 70px;
+          left: 200px;
+          z-index: 1999;
+        }
+        .main_body {
+          margin-top: 135px;
+          padding: 0 10px 100px;
         }
       }
     }

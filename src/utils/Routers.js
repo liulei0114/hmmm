@@ -9,7 +9,7 @@ export const myrouter = {
       component: () => import('@/views/data'),
       meta: {
         title: '数据概览',
-        icon: 'el-icon-pie-chart'
+        icon: 'el-icon-s-grid'
       }
     },
     {
@@ -128,7 +128,7 @@ export const myrouter = {
       component: () => import('@/views/articles'),
       meta: {
         title: '面试技巧',
-        icon: 'el-icon-phone-outline'
+        icon: 'el-icon-phone'
       }
     }
   ]

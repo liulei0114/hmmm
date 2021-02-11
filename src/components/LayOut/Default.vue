@@ -1,15 +1,14 @@
 <template>
   <div>
-    <router-view></router-view>
+    <transition name="el-zoom-in-center">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
 <style lang="less" scoped>
-
 </style>
