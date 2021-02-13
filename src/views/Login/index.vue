@@ -82,14 +82,14 @@ export default {
     position: absolute;
     left: 20%;
     top: 50%;
-    width: 520px;
+    width: 480px;
     padding: 35px 35px 15px 35px;
     margin: -200px 0 0 0;
     background: #f5f5f5;
     .login_text {
       font-size: 22px;
       color: #000;
-      padding: 0 20px;
+      padding: 0 10px;
     }
     .login_form {
       margin-top: 20px;
@@ -108,7 +108,7 @@ export default {
   .logingBg {
     position: absolute;
     right: 5%;
-    top: 5%;
+    bottom: 5%;
     width: 700px;
     height: 460px;
     background: no-repeat url('~assets/logingBg.png');

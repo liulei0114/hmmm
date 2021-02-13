@@ -132,3 +132,46 @@ export function selectPermissionByRoleApi (id) {
     method: 'GET'
   })
 }
+
+//! 后台管理-企业管理-企业列表
+export function getCompanyListApi (params) {
+  return service({
+    url: '/companys',
+    method: 'GET',
+    params
+  })
+}
+
+//! 后台管理-企业管理-修改企业状态
+export function editCompanyStateApi (id, state) {
+  return service({
+    url: '/companys/' + id + '/' + state,
+    method: 'POST'
+  })
+}
+
+//! 后台管理-企业管理-删除企业信息
+export function deleteCompanyApi (id) {
+  return service({
+    url: '/companys/' + id,
+    method: 'DELETE'
+  })
+}
+
+//! 后台管理-企业管理-新增企业信息
+export function addCompanyInfoApi (data) {
+  return service({
+    url: '/companys',
+    method: 'POST',
+    data
+  })
+}
+
+//! 后台管理-企业管理-新增企业信息
+export function editCompanyInfoApi (id, data) {
+  return service({
+    url: '/companys/' + id,
+    method: 'PUT',
+    data
+  })
+}

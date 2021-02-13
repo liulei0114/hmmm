@@ -4,7 +4,7 @@
       <div class="search_wrap flexC">
         <el-input v-model="username" placeholder="根据用户名搜索"></el-input>
         <el-button @click="clearUsername()">清空</el-button>
-        <el-button type="primary" @click="getUserList()">搜索</el-button>
+        <el-button type="primary" @click="getUserList(true)">搜索</el-button>
         <el-button
           type="success"
           icon="el-icon-edit"
@@ -116,8 +116,6 @@
         <el-button type="primary" @click="handleEditUserinfo()">确 定</el-button>
       </div>
     </el-dialog>
-
-    <!-- 新增用户 -->
   </div>
 </template>
 
@@ -175,7 +173,14 @@ export default {
     this.getPermissionList()
   },
   methods: {
-    async getUserList () {
+    async getUserList (flag) {
+      if (flag) {
+        this.pageInfo = {
+          page: 1,
+          pagesize: 10,
+          total: 0
+        }
+      }
       let params = { ...this.pageInfo, username: this.username }
       let result = await getUserListApi(params)
       this.pageInfo.total = result.counts

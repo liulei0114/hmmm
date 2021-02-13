@@ -16,6 +16,9 @@ export default {
     handleCurrentChange (page) {
       this.pageInfo.page = page
       this.fetchDataList()
+    },
+    formatDate (date) {
+      return this.$moment(date).format('YYYY-MM-DD HH:mm:ss')
     }
   }
 }

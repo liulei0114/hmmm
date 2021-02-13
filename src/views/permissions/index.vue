@@ -4,7 +4,7 @@
       <div class="search_wrap flexC">
         <el-input v-model="permissionName" placeholder="根据用户名搜索"></el-input>
         <el-button @click="clearPermissionName()">清空</el-button>
-        <el-button type="primary" @click="getPermissionRoleList()">搜索</el-button>
+        <el-button type="primary" @click="getPermissionRoleList(true)">搜索</el-button>
         <el-button
           type="success"
           icon="el-icon-edit"
@@ -137,7 +137,14 @@ export default {
     this.getPermissionRoleList()
   },
   methods: {
-    async getPermissionRoleList () {
+    async getPermissionRoleList (flag) {
+      if (flag) {
+        this.pageInfo = {
+          page: 1,
+          pagesize: 10,
+          total: 0
+        }
+      }
       let params = { ...this.pageInfo, title: this.permissionName }
       let result = await getPermissionRoleListApi(params)
       this.pageInfo.total = result.counts
@@ -240,9 +247,6 @@ export default {
       this.handleType = '新增权限组'
       this.permissionRole = {}
       this.permissionVisible = true
-    },
-    formatDate (date) {
-      return this.$moment(date).format('YYYY-MM-DD')
     }
   }
 }
