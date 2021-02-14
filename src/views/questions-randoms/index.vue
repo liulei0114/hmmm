@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>没有列表接口</div>
 </template>
 
 <script>

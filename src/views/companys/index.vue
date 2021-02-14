@@ -13,8 +13,8 @@
                 placeholder="请选择"
                 @change="handleProvinceChange"
               >
-                <el-option label="北京" value="北京"></el-option>
-                <el-option label="天津" value="天津"></el-option>
+                <el-option label="北京市" value="北京市"></el-option>
+                <el-option label="天津市" value="天津市"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="地区" size="small" prop="city">
@@ -38,13 +38,16 @@
                 <el-option label="禁止" value="0"></el-option>
               </el-select>
             </el-form-item>
-            <el-button size="small" @click="clearSearchWrap()">清空</el-button>
-            <el-button size="small" type="primary" @click="getCompanyList(true)">搜索</el-button>
+            <el-form-item size="small"  class="searchBtn">
+              <el-button size="small" @click="clearSearchWrap()">清空</el-button>
+              <el-button size="small" type="primary" @click="getCompanyList(true)">搜索</el-button>
+            </el-form-item>
+
             <el-button
               size="small"
               type="success"
               icon="el-icon-edit"
-              style="marginLeft:auto"
+              style="marginLeft:auto;marginRight:23px"
               @click="addCompany()"
             >新增企业</el-button>
           </div>
@@ -158,8 +161,8 @@
         <el-form-item label="城市地区" label-width="140px" required class="provice_area">
           <el-form-item prop="province">
             <el-select v-model="companyInfo.province" @change="handleProvinceChange">
-              <el-option label="北京" value="北京"></el-option>
-              <el-option label="天津" value="天津"></el-option>
+              <el-option label="北京市" value="北京市"></el-option>
+              <el-option label="天津市" value="天津市"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="city">
@@ -258,9 +261,7 @@ export default {
         province: [
           { required: true, message: '请选择城市', trigger: 'change' }
         ],
-        city: [
-          { required: true, message: '请选择地区', trigger: 'change' }
-        ],
+        city: [{ required: true, message: '请选择地区', trigger: 'change' }],
         tags: [
           { required: true, message: '请输入企业标签', trigger: 'blur' },
           {
@@ -308,7 +309,7 @@ export default {
       this.permissionList = result
     },
     handleProvinceChange (value) {
-      if (value.trim() !== '' && value === '北京') {
+      if (value.trim() !== '' && value === '北京市') {
         if (this.companyDialogVisible) {
           this.dialogAreaList = [...this.baseAreaList]
         } else {
@@ -448,6 +449,12 @@ export default {
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+       .searchBtn {
+        /deep/ .el-form-item__content {
+          text-align: left;
+          margin-left: 25px;
+        }
+      }
     }
   }
   /deep/ .el-dialog {

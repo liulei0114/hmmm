@@ -175,3 +175,88 @@ export function editCompanyInfoApi (id, data) {
     data
   })
 }
+
+//! 后台管理-题库管理-基础题库-学科类别
+export function getSubjectTypeListApi () {
+  return service({
+    url: '/subjects/simple',
+    method: 'GET'
+  })
+}
+
+//! 后台管理-题库管理-基础题库-根据学科id获取学科二级目录分类
+export function getSubjectDirectorysListApi (params) {
+  return service({
+    url: '/directorys/simple',
+    method: 'GET',
+    params
+  })
+}
+
+//! 后台管理-题库管理-基础题库-根据学科id获取学科标签
+export function getSubjectTagListApi (params) {
+  return service({
+    url: '/tags/simple',
+    method: 'GET',
+    params
+  })
+}
+
+//! 后台管理-题库管理-基础题库列表
+export function getQuestionListApi (params) {
+  return service({
+    url: '/questions',
+    method: 'GET',
+    params
+  })
+}
+
+//! 后台管理-题库管理-基础题库列表
+export function joinQuestionChoiceApi (id, status) {
+  return service({
+    url: '/questions/choice/' + id + '/' + status,
+    method: 'PATCH'
+  })
+}
+
+//! 后台管理-题库管理-删除基础题
+export function deleteQuestionApi (id) {
+  return service({
+    url: '/questions/' + id,
+    method: 'DELETE'
+  })
+}
+
+//! 后台管理-题库管理-题目详情
+export function getQuestionDetailApi (id) {
+  return service({
+    url: '/questions/' + id,
+    method: 'GET'
+  })
+}
+
+//! 后台管理-题库管理-精选题库
+export function getQuestionChoiceListApi (params) {
+  return service({
+    url: '/questions/choice',
+    method: 'GET',
+    params
+  })
+}
+
+//! 后台管理-题库管理-精选题库-修改发布状态
+export function editQuestionChoicePublishStateApi (id, state) {
+  return service({
+    url: '/questions/choice/' + id + '/' + state,
+    method: 'POST'
+  })
+}
+
+//! 后台管理-题库管理-精选题库-修改审核状态
+export function editQuestionChoiceCheckStateApi (id, data) {
+  return service({
+    url: '/questions/check/' + id,
+    method: 'POST',
+    data
+  })
+}
