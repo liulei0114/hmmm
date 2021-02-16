@@ -28,7 +28,6 @@
                   :label="item.label"
                   :value="item.value"
                 ></el-option>
-                <el-option label="天津市" value="天津市"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="二级目录" size="small" prop="catalogID">
@@ -347,6 +346,8 @@ export default {
         .then((result) => {
           this.subjectDirList = result[0]
           this.subjectTagList = result[1]
+          this.searchkey.catalogID = ''
+          this.searchkey.tags = ''
         })
         .catch((err) => {
           this.$message({

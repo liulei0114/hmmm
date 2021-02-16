@@ -1,6 +1,6 @@
 const { resolve } = require('path')
 const path = require('path')
-
+const webpack = require('webpack')
 module.exports = {
   // 部署应用包时的基本 URL,用法和 webpack 本身的 output.publicPath 一致
   publicPath: '/',
@@ -36,6 +36,9 @@ module.exports = {
       .options({
         symbolId: 'icon-[name]'
       })
+    config.plugin('provide').use(webpack.ProvidePlugin, [{
+      'window.Quill': 'quill'
+    }])
   },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {

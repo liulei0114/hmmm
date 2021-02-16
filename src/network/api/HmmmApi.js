@@ -260,3 +260,21 @@ export function editQuestionChoiceCheckStateApi (id, data) {
     data
   })
 }
+
+//! 后台管理-题库管理-试题录入
+export function enterQuestionApi (data) {
+  return service({
+    url: '/questions',
+    method: 'POST',
+    data
+  })
+}
+
+//! 后台管理-题库管理-修改试题
+export function editQuestionApi (id, data) {
+  return service({
+    url: '/questions/' + id,
+    method: 'PUT',
+    data
+  })
+}

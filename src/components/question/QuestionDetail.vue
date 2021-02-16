@@ -19,11 +19,16 @@
           <span>选项：（以下选中的选项为正确答案）</span>
         </div>
         <div>
-          <el-radio-group :value="1">
-            <div v-for="item in questionInfo.options" :key="item.id" style="margin: 15px 0">
-              <el-radio :label="item.isRight">{{item.title}}</el-radio>
+          <el-radio-group v-model="radioCheck" v-if="questionInfo.questionType === '1'">
+            <div v-for="item in options" :key="item.id" style="margin: 15px 0">
+              <el-radio :label="item.code">{{item.title}}</el-radio>
             </div>
           </el-radio-group>
+          <el-checkbox-group v-model="checkBoxCheck" v-if="questionInfo.questionType === '2'">
+            <div v-for="item in options" :key="item.id" style="margin: 15px 0">
+              <el-checkbox :label="item.code">{{item.title}}</el-checkbox>
+            </div>
+          </el-checkbox-group>
         </div>
       </div>
     </div>
@@ -70,6 +75,36 @@ export default {
     questionDialogVisible: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    options () {
+      if (!this.questionInfo.options) return
+      let options = this.questionInfo.options
+      options.sort((a, b) => {
+        return a.id - b.id
+      })
+      return options
+    },
+    radioCheck: {
+      set (value) {},
+      get () {
+        if (!this.questionInfo.options) return
+        return this.questionInfo.options.find((item) => item.isRight).code
+      }
+    },
+    checkBoxCheck: {
+      set (value) {},
+      get () {
+        if (!this.questionInfo.options) return
+        let temp = this.questionInfo.options.map((item) => {
+          if (item.isRight) {
+            return item.code
+          }
+        })
+        temp = this._.compact(temp)
+        return temp
+      }
     }
   },
   methods: {

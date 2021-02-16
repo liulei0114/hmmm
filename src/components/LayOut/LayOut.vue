@@ -157,6 +157,9 @@ export default {
           &.is-active {
             background: linear-gradient(90deg, #1493fa, #01c6fa);
             color: #fff;
+            i{
+              color: #fff  !important;
+            }
           }
           i {
             color: #333;
