@@ -31,7 +31,7 @@
     </el-card>
     <!-- 编辑、新增弹窗 -->
     <!-- 编辑弹窗 -->
-    <el-dialog :title="handleType" :visible.sync="menuDialogVisible" width="40%">
+    <el-dialog :title="handleType" :visible.sync="menuDialogVisible" width="40%" @close='closeDialog'>
       <el-form :model="menuInfo" :rules="rules" ref="menuform">
         <el-form-item label="权限组名称" label-width="100px">
           <el-radio v-model="menuInfo.is_point" :label="false" :disabled="handleType==='编辑菜单'">菜单</el-radio>
@@ -212,6 +212,9 @@ export default {
             message: '已取消删除'
           })
         })
+    },
+    closeDialog () {
+      this.$refs.menuform.resetFields()
     }
   }
 }

@@ -80,7 +80,7 @@
     </el-card>
 
     <!-- 编辑弹窗 -->
-    <el-dialog :title="handleType" :visible.sync="editUserVisible" width="40%">
+    <el-dialog :title="handleType" :visible.sync="editUserVisible" width="40%" @close='closeDialog'>
       <el-form :model="userInfo" :rules="rules" ref="editUserform">
         <el-form-item label="用户名" label-width="100px" prop="username">
           <el-input v-model="userInfo.username" autocomplete="on" size="medium"></el-input>
@@ -261,6 +261,9 @@ export default {
       this.handleType = '新增用户'
       this.userInfo = {}
       this.editUserVisible = true
+    },
+    closeDialog () {
+      this.$refs.editUserform.resetFields()
     }
   },
   filters: {

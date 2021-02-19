@@ -149,6 +149,7 @@
       :visible.sync="companyDialogVisible"
       width="50%"
       :before-close="cancleDialog"
+      @close='closeDialog'
     >
       <el-form :model="companyInfo" ref="companyForm" :rules="rules">
         <el-form-item label="企业名称" label-width="140px" prop="shortName">
@@ -412,6 +413,9 @@ export default {
           }
         }
       })
+    },
+    closeDialog () {
+      this.$refs.companyForm.resetFields()
     },
     cancleDialog (done) {
       this.$refs.companyForm.resetFields()

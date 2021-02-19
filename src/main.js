@@ -35,6 +35,7 @@ Vue.prototype.$bus = new Vue()
 Vue.prototype.$md5 = md5
 Vue.prototype.$moment = moment
 Vue.prototype.$echarts = echarts
+Vue.prototype.$bus = new Vue()
 
 Vue.use(ElementUI)
 Vue.use(ZkTable)

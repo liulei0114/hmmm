@@ -64,7 +64,7 @@
     </el-card>
 
     <!-- 保存/编辑弹窗 -->
-    <el-dialog :title="handleType" :visible.sync="permissionVisible" width="40%">
+    <el-dialog :title="handleType" :visible.sync="permissionVisible" width="40%" @close='closeDialog'>
       <el-form :model="permissionRole" :rules="rules" ref="permissionRole">
         <el-form-item label="用户名" label-width="100px" prop="title">
           <el-input v-model="permissionRole.title" autocomplete="on" size="medium"></el-input>
@@ -247,6 +247,9 @@ export default {
       this.handleType = '新增权限组'
       this.permissionRole = {}
       this.permissionVisible = true
+    },
+    closeDialog () {
+      this.$refs.permissionRole.resetFields()
     }
   }
 }

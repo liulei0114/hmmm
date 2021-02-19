@@ -52,6 +52,20 @@
           <div class="main_body">
             <router-view></router-view>
           </div>
+          <div class="bottom">
+            <div>
+              <i class="github">
+                <svg-icon icon-class="github"></svg-icon>
+              </i>
+            </div>
+            <div style="marginTop:5px">
+              <span style="marginRight:5px">Copyright</span>
+              <i class="github">
+                <svg-icon icon-class="copyright"></svg-icon>
+              </i>
+              <span>2019</span>
+            </div>
+          </div>
         </el-main>
       </el-container>
     </el-container>
@@ -157,8 +171,8 @@ export default {
           &.is-active {
             background: linear-gradient(90deg, #1493fa, #01c6fa);
             color: #fff;
-            i{
-              color: #fff  !important;
+            i {
+              color: #fff !important;
             }
           }
           i {
@@ -181,7 +195,15 @@ export default {
         }
         .main_body {
           margin-top: 135px;
-          padding: 0 10px 100px;
+          padding: 0 10px;
+        }
+      }
+      .bottom {
+        padding: 20px 0;
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 14px;
+        div {
+          text-align: center;
         }
       }
     }

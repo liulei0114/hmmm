@@ -278,3 +278,165 @@ export function editQuestionApi (id, data) {
     data
   })
 }
+
+//! 后台管理-学科管理-学科列表
+export function getSubjectListApi (params) {
+  return service({
+    url: '/subjects',
+    method: 'GET',
+    params
+  })
+}
+//! 后台管理-学科管理-新增学科
+export function addSubjectInfoApi (data) {
+  return service({
+    url: '/subjects',
+    method: 'POST',
+    data
+  })
+}
+
+//! 后台管理-学科管理-编辑学科
+export function editSubjectInfoApi (id, data) {
+  return service({
+    url: '/subjects/' + id,
+    method: 'PUT',
+    data
+  })
+}
+
+//! 后台管理-学科管理-删除学科
+export function deleteSubjectInfoApi (id) {
+  return service({
+    url: '/subjects/' + id,
+    method: 'DELETE'
+  })
+}
+
+//! 后台管理-学科管理-目录列表
+export function getDirectoryListApi (params) {
+  return service({
+    url: '/directorys',
+    method: 'GET',
+    params
+  })
+}
+//! 后台管理-学科管理-新增目录
+export function addDirectoryInfoApi (data) {
+  return service({
+    url: '/directorys',
+    method: 'POST',
+    data
+  })
+}
+
+//! 后台管理-学科管理-编辑目录
+export function editDirectoryInfoApi (id, data) {
+  return service({
+    url: '/directorys/' + id,
+    method: 'PUT',
+    data
+  })
+}
+
+//! 后台管理-学科管理-删除目录
+export function deleteDirectoryInfoApi (id) {
+  return service({
+    url: '/directorys/' + id,
+    method: 'DELETE'
+  })
+}
+
+//! 后台管理-学科管理-修改目录状态
+export function editDirectoryStateApi (id, state) {
+  return service({
+    url: '/directorys/' + id + '/' + state,
+    method: 'POST'
+  })
+}
+
+//! 后台管理-学科管理-标签列表
+export function getTagListApi (params) {
+  return service({
+    url: '/tags',
+    method: 'GET',
+    params
+  })
+}
+
+//! 后台管理-学科管理-新增标签
+export function addTagInfoApi (data) {
+  return service({
+    url: '/tags',
+    method: 'POST',
+    data
+  })
+}
+
+//! 后台管理-学科管理-编辑标签
+export function editTagInfoApi (id, data) {
+  return service({
+    url: '/tags/' + id,
+    method: 'PUT',
+    data
+  })
+}
+
+//! 后台管理-学科管理-删除标签
+export function deleteTagInfoApi (id) {
+  return service({
+    url: '/tags/' + id,
+    method: 'DELETE'
+  })
+}
+
+//! 后台管理-学科管理-修改标签状态
+export function editTagStateApi (id, state) {
+  return service({
+    url: '/tags/' + id + '/' + state,
+    method: 'POST'
+  })
+}
+
+//! 后台管理-面试技巧-面试列表
+export function getArticleListApi (params) {
+  return service({
+    url: '/articles',
+    method: 'GET',
+    params
+  })
+}
+
+//! 后台管理-面试技巧-修改面试状态
+export function editArticleStateApi (id, state) {
+  return service({
+    url: '/articles/' + id + '/' + state,
+    method: 'POST'
+  })
+}
+
+//! 后台管理-面试技巧-编辑面试
+export function editArticleInfoApi (id, data) {
+  return service({
+    url: '/articles/' + id,
+    method: 'PUT',
+    data
+  })
+}
+
+//! 后台管理-面试技巧-删除面试
+export function deleteArticleInfoApi (id) {
+  return service({
+    url: '/articles/' + id,
+    method: 'DELETE'
+  })
+}
+
+//! 后台管理-面试技巧-新增面试
+export function addArticleInfoApi (data) {
+  return service({
+    url: '/articles',
+    method: 'POST',
+    data
+  })
+}
