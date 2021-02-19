@@ -5,7 +5,8 @@ const loginModule = {
   namespaced: true,
   state: {
     token: getToken(),
-    userProfile: null
+    userProfile: null,
+    routerTag: []
   },
   mutations: {
     SET_USER_TOKEN (state, data) {
@@ -13,6 +14,9 @@ const loginModule = {
     },
     SET_USER_PROFILE (state, data) {
       state.userProfile = data
+    },
+    SET_ROUTER_TAG (state, data) {
+      state.routerTag = data
     }
   },
   actions: {
@@ -39,11 +43,23 @@ const loginModule = {
       let result = await getProfileApi()
       commit('SET_USER_PROFILE', result)
     },
-
     loginOut ({ commit }) {
       commit('SET_USER_TOKEN', null)
       commit('SET_USER_PROFILE', {})
       removeToken()
+    },
+    addRouterTag ({ state, commit }, tag) {
+      let tagList = [...state.routerTag]
+      let isHave = tagList.some((item) => { return item.title === tag.title })
+      if (!isHave) {
+        tagList.push(tag)
+        commit('SET_ROUTER_TAG', tagList)
+      }
+    },
+    deleteRouterTag ({ state, commit }, tagName) {
+      let tagList = [...state.routerTag]
+      tagList = tagList.filter(item => item.name !== tagName)
+      commit('SET_ROUTER_TAG', tagList)
     }
   }
 }

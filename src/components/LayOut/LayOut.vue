@@ -48,7 +48,20 @@
           </el-menu>
         </el-aside>
         <el-main>
-          <div class="nav_head"></div>
+          <div class="nav_head">
+            <div
+              v-for="tag in routerTagList"
+              :key="tag.name"
+              class="tag_view_item"
+              :class="{'active-item':tag.name === defaultAvtive}"
+            >
+              <span v-if="tag.name === defaultAvtive" class="circle_point"></span>
+              <span>{{tag.title}}</span>
+              <span class="el-icon-close-wrap" @click.stop="closeTag(tag)">
+                <i class="el-icon-close"></i>
+              </span>
+            </div>
+          </div>
           <div class="main_body">
             <router-view></router-view>
           </div>
@@ -98,6 +111,9 @@ export default {
     },
     _loginName () {
       return this.userProfile.name
+    },
+    routerTagList () {
+      return this.$store.getters.routerTag
     }
   },
   watch: {
@@ -108,13 +124,40 @@ export default {
       }
     }
   },
+  created () {
+    this.$store.dispatch('loginModule/addRouterTag', {
+      name: this.$route.name,
+      title: this.$route.meta.title
+    })
+  },
   methods: {
     handelLoginOut () {
       this.$store.dispatch('loginModule/loginOut')
       this.$router.push('/login')
     },
     handleToView (menu) {
+      this.$store.dispatch('loginModule/addRouterTag', {
+        name: menu.name,
+        title: menu.meta.title
+      })
       this.$router.push({ name: menu.name })
+    },
+    closeTag (tag) {
+      this.$store.dispatch('loginModule/deleteRouterTag', tag.name)
+      if (this.defaultAvtive === tag.name) {
+        // 关闭当前页面tag
+        let tagList = this.$store.getters.routerTag
+        if (tagList.length !== 0) {
+          let lastTag = tagList[tagList.length - 1]
+          this.$router.push({ name: lastTag.name })
+        } else {
+          this.$store.dispatch('loginModule/addRouterTag', {
+            name: 'data',
+            title: '数据概览'
+          })
+          this.$router.push({ name: 'data' })
+        }
+      }
     }
   }
 }
@@ -185,13 +228,58 @@ export default {
         padding: 0;
         .nav_head {
           width: 100%;
-          height: 35px;
+          height: 40px;
           background-color: #fff;
           padding: 0 10px;
           position: fixed;
           top: 70px;
           left: 200px;
           z-index: 1999;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          .tag_view_item {
+            position: relative;
+            height: 26px;
+            line-height: 26px;
+            border: 1px solid #d8dce5;
+            color: #495060;
+            background: #fff;
+            padding-left: 8px;
+            font-size: 12px;
+            margin-left: 5px;
+            .el-icon-close-wrap {
+              width: 16px;
+              height: 16px;
+              margin: 0 5px;
+              border-radius: 50%;
+              text-align: center;
+              vertical-align: 3px;
+              transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+              transform-origin: 100% 50%;
+              .el-icon-close {
+                transform: scale(0.8);
+                vertical-align: -3px;
+              }
+              &:hover {
+                background-color: #b4bccc;
+                color: #fff;
+              }
+            }
+            .circle_point {
+              display: inline-block;
+              background: #fff;
+              width: 8px;
+              height: 8px;
+              border-radius: 50%;
+              margin-right: 5px;
+            }
+          }
+          .active-item {
+            background-color: #1493fa;
+            color: #fff;
+            border-color: #1493fa;
+          }
         }
         .main_body {
           margin-top: 135px;
