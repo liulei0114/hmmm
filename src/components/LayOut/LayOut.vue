@@ -4,6 +4,15 @@
       <el-header class="flexC">
         <img src="~assets/home_logo.png" alt />
         <i :class="getCollapse" class="collapseIcon" @click="isCollapse = !isCollapse"></i>
+        <div style="marginLeft:15px">
+          <transition name="el-fade-in">
+            <el-breadcrumb separator="/">
+              <el-breadcrumb-item :to="{ name: 'data' }">面板</el-breadcrumb-item>
+              <el-breadcrumb-item v-for="route in routerList" :key="route.name">{{route.meta.title}}</el-breadcrumb-item>
+            </el-breadcrumb>
+          </transition>
+        </div>
+
         <div class="login_name">
           <el-dropdown>
             <span class="el-dropdown-link">
@@ -54,6 +63,7 @@
               :key="tag.name"
               class="tag_view_item"
               :class="{'active-item':tag.name === defaultAvtive}"
+              @click="$router.push({name:tag.name})"
             >
               <span v-if="tag.name === defaultAvtive" class="circle_point"></span>
               <span>{{tag.title}}</span>
@@ -93,7 +103,8 @@ export default {
     return {
       isCollapse: false,
       menuList: myrouter,
-      defaultAvtive: ''
+      defaultAvtive: '',
+      routerList: []
     }
   },
   computed: {
@@ -120,6 +131,8 @@ export default {
     '$route.path': {
       immediate: true,
       handler () {
+        this.routerList = [...this.$route.matched]
+        this.routerList.shift()
         this.defaultAvtive = this.$route.name
       }
     }
@@ -191,6 +204,11 @@ export default {
           color: #fff;
         }
       }
+      /deep/ .el-breadcrumb__item {
+        .el-breadcrumb__inner {
+          color: #fff !important;
+        }
+      }
     }
     .layout_body {
       width: 100%;
@@ -248,6 +266,9 @@ export default {
             padding-left: 8px;
             font-size: 12px;
             margin-left: 5px;
+            &:hover {
+              cursor: pointer;
+            }
             .el-icon-close-wrap {
               width: 16px;
               height: 16px;
