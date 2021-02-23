@@ -7,7 +7,10 @@
         <div style="marginLeft:15px">
           <transition name="el-fade-in">
             <el-breadcrumb separator="/">
-              <el-breadcrumb-item :to="{ name: 'data' }">面板</el-breadcrumb-item>
+              <el-breadcrumb-item
+                :to="{ name: 'data' }"
+                @click.native="handleToView({name:'data',meta:{title:'数据概览'}})"
+              >面板</el-breadcrumb-item>
               <el-breadcrumb-item v-for="route in routerList" :key="route.name">{{route.meta.title}}</el-breadcrumb-item>
             </el-breadcrumb>
           </transition>
