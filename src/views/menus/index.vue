@@ -14,9 +14,13 @@
         :is-fold="false"
         tree-type
         :selection-type="false"
-        show-index
-        index-text="#"
       >
+        <template slot="title" slot-scope="scope">
+          <div :style="getMarginLeft(scope.row.level)" class="flexC">
+            <i :class="levelTitleIcon(scope.row)" style="fontSize:18px;marginRight:5px"></i>
+            <span>{{scope.row.title}}</span>
+          </div>
+        </template>
         <template slot="handle" slot-scope="scope">
           <el-button type="primary" icon="el-icon-edit" circle plain @click="editMenu(scope.row)"></el-button>
           <el-button
@@ -31,7 +35,12 @@
     </el-card>
     <!-- 编辑、新增弹窗 -->
     <!-- 编辑弹窗 -->
-    <el-dialog :title="handleType" :visible.sync="menuDialogVisible" width="40%" @close='closeDialog'>
+    <el-dialog
+      :title="handleType"
+      :visible.sync="menuDialogVisible"
+      width="40%"
+      @close="closeDialog"
+    >
       <el-form :model="menuInfo" :rules="rules" ref="menuform">
         <el-form-item label="权限组名称" label-width="100px">
           <el-radio v-model="menuInfo.is_point" :label="false" :disabled="handleType==='编辑菜单'">菜单</el-radio>
@@ -83,11 +92,18 @@ import {
 export default {
   data () {
     return {
+      marginLeft: 20,
       menuList: [],
       columns: [
         {
+          label: 'id',
+          prop: 'id',
+          width: '0'
+        },
+        {
           label: '标题',
-          prop: 'title'
+          type: 'template',
+          template: 'title'
         },
         {
           label: '权限点代码',
@@ -146,15 +162,29 @@ export default {
       let resultStr = JSON.stringify(result)
       resultStr = resultStr.replace(/(childs)|(points)/g, 'children')
       this.menuList = JSON.parse(resultStr)
+      this.menuItemLevel(this.menuList, 0)
     },
     levelTitleIcon (row) {
-      if (row.id === null) {
-        return { 'el-icon-folder-opened': true }
+      if (row.pid === 0) {
+        return 'el-icon-folder-opened'
       } else if (row.pid && row.is_point) {
-        return { 'el-icon-folder': true }
+        return 'el-icon-view'
       } else {
-        return { 'el-icon-view': true }
+        return 'el-icon-folder'
       }
+    },
+    getMarginLeft (level) {
+      return { marginLeft: level * this.marginLeft + 'px' }
+    },
+    menuItemLevel (menuList, index) {
+      menuList.forEach((e) => {
+        let i = index
+        e.level = i
+        if (e.children) {
+          i++
+          this.menuItemLevel(e.children, i)
+        }
+      })
     },
     editMenu (row) {
       this.handleType = '编辑菜单'
