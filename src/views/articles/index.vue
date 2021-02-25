@@ -125,6 +125,7 @@ import {
 import Pagination from '@/mixins/pagination.js'
 import PlayVideo from '@/components/video/PlayVideo.vue'
 import ArticlePreview from '@/components/articlePreview/ArticlePreview.vue'
+import { toolbar } from '@/views/questions-new/vue-quill-editor.config'
 export default {
   mixins: [Pagination],
   data () {
@@ -157,15 +158,8 @@ export default {
         theme: 'snow',
         placeholder: '请输入正文',
         modules: {
-          imageDrop: true,
-          imageResize: {
-            displayStyles: {
-              backgroundColor: 'black',
-              border: 'none',
-              color: 'white'
-            },
-            modules: ['Resize', 'DisplaySize', 'Toolbar']
-          }
+          //  富文本编辑器配置
+          toolbar: toolbar
         }
       }
     }

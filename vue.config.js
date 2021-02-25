@@ -1,6 +1,7 @@
 const { resolve } = require('path')
 const path = require('path')
 const webpack = require('webpack')
+
 module.exports = {
   // 部署应用包时的基本 URL,用法和 webpack 本身的 output.publicPath 一致
   publicPath: '/',
@@ -39,11 +40,43 @@ module.exports = {
     config.plugin('provide').use(webpack.ProvidePlugin, [{
       'window.Quill': 'quill'
     }])
+    config.when(process.env.NODE_ENV === 'production', config => {
+      // 使用externals设置排除项
+      config.set('externals', {
+        vue: 'Vue',
+        'vue-router': 'VueRouter',
+        axios: 'axios',
+        lodash: '_',
+        echarts: 'echarts',
+        nprogress: 'NProgress',
+        'element-ui': 'ELEMENT',
+        moment: 'moment',
+        quill: 'Quill'
+      })
+      // 使用插件
+      config.plugin('html').tap(args => {
+        // 添加参数isProd
+        args[0].isProd = true
+        return args
+      })
+    })
+    config.when(process.env.NODE_ENV === 'development', config => {
+      // 使用插件
+      config.plugin('html').tap(args => {
+        // 添加参数isProd
+        args[0].isProd = false
+        return args
+      })
+    })
   },
   configureWebpack: (config) => {
     if (process.env.NODE_ENV === 'production') {
       // 生产环境
       config.mode = 'production'
+      config.optimization.minimizer[0].options.terserOptions.compress.warnings = false
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_debugger = true
+      config.optimization.minimizer[0].options.terserOptions.compress.pure_funcs = ['console.log']
     } else if (process.env.NODE_ENV === 'development') {
       // 开发环境
       config.mode = 'development'

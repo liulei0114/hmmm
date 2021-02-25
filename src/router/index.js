@@ -20,7 +20,7 @@ const routes = [
 
 const router = new VueRouter({
   scrollBehavior: () => ({ y: 0 }),
-  mode: 'history',
+  mode: 'hash',
   routes
 })
 
@@ -34,7 +34,6 @@ router.beforeEach((to, from, next) => {
   NProgress.start()
   if (to.path === '/login') {
     next()
-    NProgress.done()
   } else {
     if (store.getters.token) { // ? 有token
       if (!store.getters.userProfile) { // ? 刷新页面有token 没有用户信息,重新获取
@@ -46,9 +45,9 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       next('/login')
-      NProgress.done()
     }
   }
+  NProgress.done()
 })
 
 export default router

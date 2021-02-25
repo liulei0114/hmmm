@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { getToken } from '@/utils/LocalStorage'
+import { Message } from 'element-ui'
 // 创建axios实例
 export const service = axios.create({
   baseURL: process.env.VUE_APP_API_URL, // api的base_url
-  timeout: 5000 // 请求超时时间
+  timeout: 15000 // 请求超时时间
 })
 
 // request拦截器
@@ -25,6 +26,7 @@ service.interceptors.response.use(
     return Promise.resolve(res)
   },
   error => { // 非2XX
+    Message.error(error.message)
     if (error && error.response && error.response.status) {
       return Promise.reject(error.response.data)
     }

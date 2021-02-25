@@ -9,6 +9,7 @@
             @change="handleSubjectChange"
           >
             <el-option
+              style="width:400px"
               v-for="item in subjectTypeList"
               :key="item.value"
               :label="item.label"
@@ -19,6 +20,7 @@
         <el-form-item label="目录：" label-width="100px" prop="catalogID">
           <el-select v-model="questionInfo.catalogID" style="width:400px">
             <el-option
+              style="width:400px"
               v-for="item in subjectDirList"
               :key="item.value"
               :label="item.label"
@@ -29,6 +31,7 @@
         <el-form-item label="企业：" label-width="100px" prop="enterpriseID">
           <el-select v-model="questionInfo.enterpriseID" style="width:400px">
             <el-option
+              style="width:400px"
               v-for="item in companyList"
               :key="item.id"
               :label="item.company"
@@ -286,15 +289,6 @@ export default {
         theme: 'snow',
         placeholder: '请输入正文',
         modules: {
-          imageDrop: true,
-          imageResize: {
-            displayStyles: {
-              backgroundColor: 'black',
-              border: 'none',
-              color: 'white'
-            },
-            modules: ['Resize', 'DisplaySize', 'Toolbar']
-          },
           //  富文本编辑器配置
           toolbar: toolbar
         }

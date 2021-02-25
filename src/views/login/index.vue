@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     handleLogin () {
+      console.log('登录了')
       this.$refs.loginRef.validate(async (flag) => {
         if (flag) {
           let _password = shajs('sha256')
