@@ -158,7 +158,7 @@ export default {
   methods: {
     async getMenuList () {
       let result = await getMenuListApi()
-      result.forEach((e, i) => {
+      result.forEach((e) => {
         e.pid = 0
       })
       let resultStr = JSON.stringify(result)
