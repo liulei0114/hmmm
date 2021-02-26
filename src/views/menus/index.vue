@@ -146,7 +146,9 @@ export default {
   watch: {
     'menuInfo.is_point' (value) {
       if (this.handleType === '新建菜单') {
-        this.$set(this.menuInfo, 'pid', '')
+        value
+          ? this.$set(this.menuInfo, 'pid', '')
+          : this.$set(this.menuInfo, 'pid', 0)
       }
     }
   },
@@ -217,7 +219,9 @@ export default {
       })
     },
     addMenu () {
-      this.menuInfo = {}
+      this.menuInfo = {
+        is_point: false
+      }
       this.handleType = '新建菜单'
       this.menuDialogVisible = true
       this.$set(this.menuInfo, 'pid', 0)
